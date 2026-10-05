@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 class MatakuliahController extends Controller
 {
     // Menampilkan daftar mata kuliah
-    public function index()
-    {
-        $data = Matakuliah::with('dosen')->get();
-        return view('matakuliah.index', compact('data'));
-    }
+    // public function index()
+    // {
+    //     $data = Matakuliah::with('dosen')->get();
+    //     return view('matakuliah.index', compact('data'));
+    // }
 
     // Menampilkan form tambah mata kuliah
     public function create()
@@ -23,6 +23,39 @@ class MatakuliahController extends Controller
     }
 
     // Menyimpan data baru dari form
+    // public function store(Request $request)
+    // {
+    //     Matakuliah::create([
+    //         'kode_mk' => $request->kode_mk,
+    //         'nama_mk' => $request->nama_mk,
+    //         'sks' => $request->sks,
+    //         'semester' => $request->semester,
+    //         'dosen_id' => $request->dosen_id,
+    //     ]);
+
+    //     return redirect()->route('matakuliah.index')->with('success', 'Mata kuliah berhasil ditambahkan');
+    // }
+
+    // route model binding di show matkul
+    // public function show(Matakuliah $matakuliah)
+    // {
+    //     return view('matakuliah.show', compact('matakuliah'));
+    // }
+
+    // tugas 6
+    public function index()
+    {
+        $matakuliah = Matakuliah::with('dosen')->get();
+        // $matakuliah = Matakuliah::with('dosen')->where('id', 0)->get();
+        return view('matakuliah.index', compact('matakuliah'));
+    }
+    
+    public function show(Matakuliah $matakuliah)
+    {
+        return view('matakuliah.show', compact('matakuliah'));
+    }
+
+        // Menyimpan data baru dari form
     public function store(Request $request)
     {
         Matakuliah::create([
@@ -33,6 +66,6 @@ class MatakuliahController extends Controller
             'dosen_id' => $request->dosen_id,
         ]);
 
-        return redirect('/matakuliah')->with('success', 'Mata kuliah berhasil ditambahkan');
+        return redirect()->route('matakuliah.index')->with('success', 'Mata kuliah berhasil ditambahkan');
     }
 }
